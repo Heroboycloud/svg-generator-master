@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Online SVG Vector Generator</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="An online SVG Vector Graphics Generator" />
+		<meta name="keywords" content="SVG, Vector, Online, Generator, Export, Vectorgraphics, Graphics, HTML5, JavaScript, Raphael" />
+		<meta name="author" content="Simon Heimler" />
+
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+
+		<header>
+			<nav id="top_navigation">
+				<a href="info.html#examples" title="Some Example Graphics">Examples</a> |
+				<a href="info.html#about" title="About this project and me">About</a> |
+				<a href="info.html#contact" title="Contact and Impressum">Contact</a>
+			</nav>
+
+			<h1><a href="index.html">SVG-Generator.de</a></h1>
+			<h2>An online SVG Vector Graphics Generator</h2>
+
+		</header>
+
+		<aside>
+			<!-- Controls the Generator -->
+			<div id="generator">
+				<h3>Generator:</h3>
+				<!-- Generate this!-->
+				<select id="algoselect" onChange="Controller.selectAlgo()" title="Choose between Algorithms">
+					<!-- Algorithm Options will be generated here -->
+				</select>
+				<button id="generate" class="tooltip" onclick="Controller.generate()" title="Generate Graphic based on current Selection">Generate!</button>
+				<button id="overlay" class="tooltip" onclick="Controller.overlay()" title="Do not reset the paper and draw the new Graphic over the old one">Overlay!</button>
+				<button id="randomize" class="tooltip" onclick="Controller.randomize()" title="Randomizes Parameters.">Randomize!</button>
+				<button id="export" class="tooltip" onclick="Controller.exportSVG()" title="Export the Graphic to a vector .svg file which can be imported in other programs. (Illustrator, Inkscape...)">Export to SVG</button>
+			</div>
+			<!-- Controls the Algorithm Parameters -->
+			<div id="parameter">
+				<h3>Parameters:</h3>
+
+				<table id="parametertable">
+					<tr id="bgcolor" class="tooltip" title="Background Color. <br><i>Use 'none' for no Color</i>">
+						<td id="tdwidth">Background:</td>
+						<td>
+							<input class="colorpick" type="text" name="bgcolor"/>
+						</td>
+					</tr>
+					<tr id="count" class="tooltip" title="Number of generated Elements<br><i>Must be a number greater than 0</i>">
+						<td>Count:</td>
+						<td>
+							<input type="text" name="count"/>
+						</td>
+					</tr>
+					<tr id="stroke" class="tooltip" title="Color of the stroke (Outline). <br><i>Use 'none' for no Color</i>">
+						<td>Stroke Color:</td>
+						<td>
+							<input class="colorpick" type="text" name="stroke"/>
+						</td>
+					</tr>
+					<tr id="strokeW" class="tooltip" title="Width of the stroke<br><i>Must be a number greater than 0</i>">
+						<td>Stroke Width:</td>
+						<td>
+							<input type="text" name="strokeW"/>
+						</td>
+					</tr>
+					<tr id="fill" class="tooltip" title="Color of the fill. <br><i>Use 'none' for no Color</i>">
+						<td>Fill Color:</td>
+						<td>
+							<input class="colorpick" type="text" name="fill"/>
+						</td>
+					</tr>
+					<tr id="opacity" class="tooltip" title="Opacity of the Elements<br><i>Must be a number between 0 and 100</i>">
+						<td>Opacity (%):</td>
+						<td>
+							<input type="text" name="opacity"/>
+						</td>
+					</tr>
+					<tr id="minsize" class="tooltip" title="Minimum Size of the Elements<br><i>Must be a number greater than 0</i>">
+						<td>Min Size:</td>
+						<td>
+							<input type="text" name="minsize"/>
+						</td>
+					</tr>
+					<tr id="maxsize" class="tooltip" title="Maximum Size of the Elements<br><i>Must be a number greater than 0</i>">
+						<td>Max Size:</td>
+						<td>
+							<input type="text" name="maxsize"/>
+						</td>
+					</tr>
+					<tr id="paddingV" class="tooltip" title="Vertical (top & bottom) Padding<br><i>Must be a positive or negative number</i>">
+						<td >Padding V:</td>
+						<td>
+							<input type="text" name="paddingV"/>
+						</td>
+					</tr>
+					<tr id="paddingH" class="tooltip" title="Horizontal (left & right) Padding<br><i>Must be a positive or negative number</i>">
+						<td>Padding H:</td>
+						<td>
+							<input type="text" name="paddingH"/>
+						</td>
+					</tr>
+					<tr id ="textbox" class="tooltip" title="Write your own input text here. Hint: You can use a Character Map Tool">
+						<td colspan="2">
+							<textarea cols="15" rows="3" name="textbox"></textarea>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+
+		</aside>
+
+			<div id="paper">
+				<!-- Online SVG Generator - Simon Heimler -->
+			</div>
+
+		<footer>2011 - Simon Heimler | <a href="info.html#contact">Impressum</a> | <a href="https://github.com/Fannon/svg-generator" target="_blank">Project at Github</a> <span id="benchmark"></span></footer>
+
+		<!-- JS Libraries: -->
+		<!-- http://www.jquery.com -->
+		<script src="lib/jquery-1.12.4.min.js" type="text/javascript"></script>
+
+		<!-- http://www.raphaeljs.com/ -->
+		<script src="lib/raphael-min.js" type="text/javascript"></script>
+
+		<!-- jQuery Plugin: Color Picker http://www.eyecon.ro/colorpicker/ -->
+		<link rel="stylesheet" media="screen" type="text/css" href="lib/colorpicker/css/colorpicker.css" />
+		<script type="text/javascript" src="lib/colorpicker/js/colorpicker.min.js"></script>
+
+		<link rel="stylesheet" media="screen" type="text/css" href="lib/colors/jquery.minicolors.css">
+		<script type="text/javascript" src="lib/colors/jquery.minicolors.min.js"></script>
+
+		<!-- <link rel="stylesheet" media="screen" type="text/css" href="lib/color-picker-drawr-palette/dist/jquery.drawrpalette-min.js"> -->
+		<!-- <script type="text/javascript" src="lib/color-picker-drawr-palette/dist/jquery.drawrpalette-min.js"></script> -->
+		
+		<script type="text/javascript" src="lib/tooltipster.min.js"></script>
+
+		<script src="js/algorithms.js" type="text/javascript"></script>
+		<script src="js/parameters.js" type="text/javascript"></script>
+		<script src="js/paper.js" type="text/javascript"></script>
+		<script src="js/controller.js" type="text/javascript"></script>
+	</body>
+</html>
